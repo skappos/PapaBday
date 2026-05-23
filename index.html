@@ -1,130 +1,22 @@
+<div id="controls">
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<title>Papa's Play Pen</title>
+  <div id="leftControls">
+    <button id="prevBtn">◀</button>
+    <button id="resetBtn">Restart</button>
+  </div>
+
+  <span id="holeButtons"></span>
+
+  <button id="nextBtn">▶</button>
+
+</div>
+
 <style>
-*{box-sizing:border-box}
-html,body{
-  margin:0;width:100%;height:100%;overflow:hidden;
-  touch-action:none;
-  font-family:Arial, Helvetica, sans-serif;
-  background:#86d9ff;
-}
-#game{
-  position:relative;width:100vw;height:100vh;overflow:hidden;
-  background:linear-gradient(#78d4ff 0%,#d7f7ff 45%,#f3ce7b 100%);
-}
-#header{
-  position:absolute;top:8px;left:50%;transform:translateX(-50%);
-  z-index:50;text-align:center;width:min(94vw,780px);pointer-events:none;
-}
-#mainTitle{
-  display:inline-block;background:linear-gradient(#9a5b2e,#66391d);
-  color:#fff7dd;padding:9px 22px 6px;border-radius:18px;
-  border:4px solid #4a2711;font-size:clamp(24px,5vw,46px);
-  font-weight:1000;letter-spacing:1px;text-shadow:2px 3px 0 #3b220f;
-}
-#holeTitle{
-  margin:5px auto 0;width:max-content;max-width:82vw;
-  background:transparent;color:white;padding:0;border-radius:0;
-  border:none;font-size:clamp(14px,2.2vw,22px);
-  font-weight:1000;text-shadow:0 3px 8px rgba(0,0,0,.55);
-}
-.hud{
-  position:absolute;z-index:60;top:16px;padding:10px 12px;
-  background:rgba(23,50,77,.93);color:white;border:3px solid rgba(255,255,255,.35);
-  border-radius:16px;text-align:center;box-shadow:0 5px 14px rgba(0,0,0,.25);
-}
-#holeHud{left:12px}
-#strokeHud{right:12px}
-#scorecard{
-  position:absolute;right:12px;top:118px;z-index:61;width:190px;max-height:calc(100vh - 205px);
-  overflow:auto;background:rgba(255,247,221,.94);color:#17324d;border:3px solid rgba(23,50,77,.35);
-  border-radius:16px;box-shadow:0 5px 14px rgba(0,0,0,.22);font-weight:900;
-}
-#scorecardTitle{padding:8px 10px 5px;text-align:center;background:#17324d;color:white;border-radius:12px 12px 0 0}
-#scorecard table{width:100%;border-collapse:collapse;font-size:13px}
-#scorecard th,#scorecard td{padding:5px 6px;text-align:center;border-bottom:1px solid rgba(23,50,77,.16)}
-#scorecard tr.activeHole{background:rgba(2,132,199,.18)}
-#scorecard tfoot td{font-size:15px;background:#ead39b;border-bottom:0}
-.hud .big{font-size:34px;font-weight:1000;line-height:1}
-.hud .small{font-size:13px;font-weight:900;opacity:.95}
-#course{
-  position:absolute;left:50%;top:140px;transform:translateX(-50%);
-  width:min(92vw,650px);height:calc(100vh - 205px);
-  min-height:520px;max-height:900px;border-radius:42px;overflow:hidden;
-  border:14px solid #8b5a2b;box-shadow:0 20px 30px rgba(0,0,0,.25), inset 0 0 34px rgba(0,0,0,.20);
-  background:#f3d38a;
-}
-#texture{position:absolute;inset:0;opacity:.7;z-index:0;pointer-events:none}
-#endzone{
-  position:absolute;top:0;left:0;right:0;height:110px;display:none;
-  align-items:center;justify-content:center;color:white;font-size:clamp(32px,7vw,60px);
-  font-weight:1000;letter-spacing:4px;background:#5b3318;
-  text-shadow:0 4px 0 #1f1308;z-index:1;pointer-events:none;
-}
-#hole{
-  position:absolute;width:44px;height:44px;border-radius:50%;background:#111;
-  box-shadow:inset 0 9px 12px rgba(255,255,255,.12),0 0 0 6px rgba(255,255,255,.45);
-  z-index:12;
-}
-#flag{position:absolute;width:4px;height:78px;background:white;z-index:13;pointer-events:none}
-#flag:after{
-  content:"";position:absolute;top:0;left:4px;border-top:12px solid transparent;
-  border-bottom:12px solid transparent;border-left:28px solid #2563eb;
-}
-#walls,#obstacles{position:absolute;inset:0;z-index:15;pointer-events:none}
-.wall{
-  position:absolute;border-radius:12px;box-shadow:0 5px 10px rgba(0,0,0,.25);z-index:16;
-}
-.wall.sandbar{background:#d6a955;border:3px solid #a57426}
-.wall.field{background:#7c2d12;border:3px solid #fb923c}
-.wall.green{background:#166534;border:3px solid #052e16}
-.wall.court{background:#92400e;border:3px solid #fff7ed}
-.wall.work{background:#4a2711;border:3px solid #facc15}
-.obstacle{
-  position:absolute;display:flex;align-items:center;justify-content:center;user-select:none;
-  z-index:18;
-}
-.obstacle span{filter:drop-shadow(0 5px 4px rgba(0,0,0,.25))}
-.player{
-  width:42px;height:46px;border-radius:10px;background:#5b3318;
-  border:4px solid #fb923c;color:white;font-weight:1000;font-size:20px;
-}
-.player:before{display:none}
-#ball{
-  position:absolute;width:34px;height:34px;border-radius:50%;z-index:30;
-  box-shadow:0 6px 12px rgba(0,0,0,.34);pointer-events:none;
-}
-.bocce{background:#0f766e;border:3px solid #d1fae5}
-.bocce:after{content:"";position:absolute;inset:6px;border-radius:50%;border:2px solid rgba(255,255,255,.45)}
-.golf{background:#f8fafc;border:2px solid #cbd5e1}
-.golf:after{
-  content:"";position:absolute;inset:6px;border-radius:50%;
-  background:radial-gradient(circle,#cbd5e1 1px,transparent 2px);background-size:7px 7px;
-}
-.basketball{background:#f97316;border:2px solid #7c2d12}
-.basketball:after{content:"";position:absolute;inset:4px;border-radius:50%;border-left:3px solid #7c2d12;border-right:3px solid #7c2d12}
-.football{width:42px!important;height:28px!important;border-radius:50%;background:#7c2d12;border:2px solid #fff}
-.football:after{content:"";position:absolute;left:15px;top:4px;width:10px;height:16px;border-left:2px solid white;border-right:2px solid white}
-#aimSvg{
-  position:absolute;inset:0;z-index:45;pointer-events:none;display:none;
-}
-#aimLine{stroke:white;stroke-width:6;stroke-linecap:round;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
-#aimHead{fill:white;filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
-#powerText{
-  position:absolute;z-index:46;color:white;font-weight:1000;text-shadow:0 2px 5px rgba(0,0,0,.7);
-  display:none;pointer-events:none;
-}
-#message{
-  position:absolute;left:50%;bottom:64px;transform:translateX(-50%);
-  width:min(92vw,700px);z-index:70;text-align:center;color:white;
-  font-weight:1000;font-size:clamp(16px,3vw,24px);text-shadow:0 3px 8px rgba(0,0,0,.55);
-  pointer-events:none;
-}
+
+/* =========================
+   CONTROLS
+========================= */
+
 #controls{
   position:absolute;
   left:50%;
@@ -132,249 +24,202 @@ html,body{
   transform:translateX(-50%);
   width:min(94vw,900px);
   z-index:80;
+
   display:flex;
   align-items:center;
   justify-content:center;
   gap:18px;
 }
+
 #leftControls{
   display:flex;
   gap:8px;
   align-items:center;
 }
-button{
-  border:0;border-radius:999px;padding:10px 14px;background:#17324d;color:white;
-  font-weight:1000;box-shadow:0 4px 8px rgba(0,0,0,.25);cursor:pointer;
+
+/* =========================
+   SCORECARD
+========================= */
+
+#scorecard{
+  position:absolute;
+  top:145px;
+  right:12px;
+  width:210px;
+  max-height:620px;
+  overflow:auto;
+  z-index:95;
+
+  background:rgba(255,248,220,.96);
+  border:4px solid rgba(23,50,77,.35);
+  border-radius:24px;
+
+  box-shadow:0 10px 18px rgba(0,0,0,.22);
 }
-.holeBtn{width:38px;height:38px;padding:0;background:#ead39b;color:#6b4a1b}
-.holeBtn.active{background:#0284c7;color:white}
+
+#scorecard h3{
+  margin:0;
+  padding:10px;
+  text-align:center;
+  background:#17324d;
+  color:white;
+  font-size:18px;
+  border-top-left-radius:18px;
+  border-top-right-radius:18px;
+}
+
+#scorecard table{
+  width:100%;
+  border-collapse:collapse;
+  font-weight:900;
+}
+
+#scorecard th,
+#scorecard td{
+  padding:6px 8px;
+  text-align:center;
+  border-bottom:1px solid rgba(0,0,0,.1);
+}
+
+#scorecard tr.totalRow{
+  background:#ead39b;
+  font-size:18px;
+}
+
+/* =========================
+   MOBILE LAYOUT
+========================= */
+
 @media(max-width:700px){
-  #course{top:128px;height:calc(100vh - 210px);border-width:10px}
-  #scorecard{left:12px;right:auto;top:98px;width:132px;max-height:92px}
-  #scorecard table{font-size:11px}
-  #scorecard th,#scorecard td{padding:3px 4px}
-  #scorecardTitle{padding:5px;font-size:12px}
-  .hud{top:10px;padding:8px}.hud .big{font-size:28px}
-  #mainTitle{font-size:24px}#holeTitle{font-size:17px}
-  #controls{gap:5px}button{padding:9px 11px}.holeBtn{width:34px;height:34px}
-}
-</style>
-</head>
-<body>
-<div id="game">
-  <div id="header">
-    <div id="mainTitle">PAPA'S PLAY PEN</div>
-    <div id="holeTitle"></div>
-  </div>
-  <div id="holeHud" class="hud"><div class="small">HOLE</div><div id="holeNum" class="big">1</div><div id="par" class="small">PAR 4</div></div>
-  <div id="strokeHud" class="hud"><div class="small">STROKES</div><div id="strokes" class="big">0</div></div>
-  <div id="scorecard">
-    <div id="scorecardTitle">SCORECARD</div>
-    <table>
-      <thead><tr><th>Hole</th><th>Par</th><th>Score</th></tr></thead>
-      <tbody id="scoreRows"></tbody>
-      <tfoot><tr><td colspan="2">Total</td><td id="totalScore">0</td></tr></tfoot>
-    </table>
-  </div>
-  <div id="course">
-    <div id="endzone">CLEVELAND</div>
-    <div id="texture"></div>
-    <div id="hole"></div>
-    <div id="flag"></div>
-    <div id="walls"></div>
-    <div id="obstacles"></div>
-    <div id="ball"></div>
-    <svg id="aimSvg">
-      <line id="aimLine" x1="0" y1="0" x2="0" y2="0"></line>
-      <polygon id="aimHead" points=""></polygon>
-    </svg>
-    <div id="powerText"></div>
-  </div>
-  <div id="message"></div>
-  <div id="controls">
-    <div id="leftControls">
-      <button id="prevBtn">◀</button>
-      <button id="resetBtn">Restart</button>
-    </div>
-    <span id="holeButtons"></span>
-    <button id="nextBtn">▶</button>
-  </div>
-</div>
-<script>
-const HOLES=[
-{name:"Papa's Play Pen",par:5,ball:"golf",bg:"#b7793f",border:"#4a2711",texture:"wood",endzone:false,hole:{x:.18,y:.16},start:{x:.84,y:.86},
- obstacles:[["emoji","🔨",.72,.28,27],["emoji","🪚",.38,.34,27],["emoji","🪛",.58,.54,25],["emoji","🧰",.24,.70,29],["emoji","🔩",.76,.72,24]],
- walls:[[.50,.16,.04,.28,"work"],[.18,.40,.42,.04,"work"],[.66,.48,.34,.04,"work"],[.38,.68,.04,.22,"work"]]},
-{name:"Dawg Pound",par:4,ball:"football",bg:"#15803d",border:"#7c2d12",texture:"football",endzone:true,hole:{x:.18,y:.09},start:{x:.82,y:.86},
- obstacles:[["player","95",.25,.30,22],["player","32",.67,.32,22],["player","24",.43,.57,22],["player","6",.74,.70,22]],
- walls:[[.30,.20,.34,.03,"field"],[.00,.43,.30,.03,"field"],[.50,.52,.32,.03,"field"],[.25,.74,.42,.03,"field"]]},
-{name:"YiaYia's Flamingo Paradise",par:3,ball:"golf",bg:"#8ee28f",border:"#2f7d32",texture:"putt",endzone:false,hole:{x:.20,y:.20},start:{x:.78,y:.84},
- obstacles:[["emoji","🦩",.62,.24,25],["emoji","🦩",.38,.42,25],["emoji","🦩",.70,.60,25],["emoji","🦩",.30,.76,25]],
- walls:[[.42,.16,.035,.32,"green"],[.58,.44,.035,.34,"green"],[.12,.55,.34,.035,"green"]]},
-{name:"Papou's Slam Dunk",par:4,ball:"basketball",bg:"#d97706",border:"#78350f",texture:"court",endzone:false,hole:{x:.72,y:.23},start:{x:.28,y:.88},
- obstacles:[["emoji","🏀",.24,.38,26],["emoji","🏀",.60,.42,26],["emoji","🏀",.42,.66,26],["emoji","🏀",.80,.72,26]],
- walls:[[.00,.28,.42,.035,"court"],[.55,.34,.45,.035,"court"],[.18,.58,.36,.035,"court"],[.66,.62,.035,.22,"court"]]},
-{name:"Bob's Blockade",par:4,ball:"golf",bg:"#65a30d",border:"#365314",texture:"grass",endzone:false,hole:{x:.50,y:.14},start:{x:.50,y:.88},
- obstacles:[["emoji","🐈‍⬛",.20,.32,29],["emoji","🐈‍⬛",.80,.34,29],["emoji","🐈‍⬛",.34,.62,29],["emoji","🐈‍⬛",.66,.70,29]],
- walls:[[.36,.25,.28,.04,"green"],[.00,.46,.30,.04,"green"],[.70,.46,.30,.04,"green"],[.36,.66,.28,.04,"green"]]},
-{name:"Beach Bocce",par:3,ball:"bocce",bg:"#f3d38a",border:"#8b5a2b",texture:"sand",endzone:false,hole:{x:.84,y:.18},start:{x:.16,y:.84},
- obstacles:[["emoji","🦀",.30,.24,26],["emoji","🐚",.58,.36,23],["emoji","🦀",.38,.62,26],["emoji","🐚",.72,.74,23]],
- walls:[[.18,.38,.46,.035,"sandbar"],[.00,.66,.34,.035,"sandbar"],[.58,.58,.30,.035,"sandbar"]]},
-{name:"Sophie's Spaghetti Space",par:5,ball:"golf",bg:"#f5f5f5",border:"#b91c1c",texture:"wood",endzone:false,hole:{x:.82,y:.16},start:{x:.18,y:.86},
- obstacles:[["emoji","🍝",.28,.24,28],["emoji","🍝",.58,.34,28],["emoji","🧆",.42,.56,24],["emoji","🍝",.74,.66,28],["emoji","🧆",.22,.74,24]],
- walls:[[.00,.30,.34,.04,"work"],[.58,.30,.42,.04,"work"],[.24,.56,.42,.04,"work"],[.68,.68,.04,.20,"work"]]},
-{name:"Nick the Greek",par:4,ball:"golf",bg:"#2563eb",border:"#1e3a8a",texture:"greek",endzone:false,hole:{x:.16,y:.18},start:{x:.84,y:.84},
- obstacles:[["emoji","🫒",.66,.28,18],["emoji","🥙",.44,.42,24],["emoji","🫒",.24,.62,18],["emoji","🥙",.70,.72,24]],
- walls:[[.34,.24,.24,.03,"field"],[.00,.48,.24,.03,"field"],[.62,.50,.28,.03,"field"],[.34,.72,.26,.03,"field"]]},
-{name:"Julie's Horse Camp",par:5,ball:"golf",bg:"#86efac",border:"#365314",texture:"pasture",endzone:false,hole:{x:.82,y:.14},start:{x:.18,y:.84},
- obstacles:[["emoji","🐎",.30,.26,30],["emoji","🐎",.64,.38,30],["emoji","🐎",.42,.64,30],["emoji","🐎",.74,.74,30]],
- walls:[[.18,.22,.04,.30,"green"],[.00,.48,.34,.04,"green"],[.52,.48,.48,.04,"green"],[.26,.72,.40,.04,"green"]]},
-{name:"Alex's Californiacation",par:6,ball:"golf",bg:"#60a5fa",border:"#b45309",texture:"california",endzone:false,hole:{x:.16,y:.16},start:{x:.84,y:.86},
- obstacles:[["emoji","🌉",.52,.34,40],["emoji","🌴",.28,.58,26],["emoji","🌴",.74,.70,26]],
- walls:[[.18,.26,.28,.04,"court"],[.56,.26,.28,.04,"court"],[.42,.26,.04,.34,"court"],[.20,.62,.44,.04,"court"]]},
-{name:"In and Out",par:5,ball:"golf",bg:"#fef3c7",border:"#dc2626",texture:"innout",endzone:false,hole:{x:.82,y:.18},start:{x:.18,y:.84},
- obstacles:[["emoji","🍔",.28,.26,30],["emoji","🍟",.62,.34,28],["emoji","🍔",.40,.58,30],["emoji","🍟",.74,.70,28]],
- walls:[[.00,.30,.34,.04,"field"],[.58,.30,.42,.04,"field"],[.26,.58,.42,.04,"field"],[.70,.62,.04,.20,"field"]]},
-{name:"Radar's Rendezvous",par:5,ball:"golf",bg:"#d9f99d",border:"#92400e",texture:"radar",endzone:false,hole:{x:.18,y:.18},start:{x:.82,y:.84},
- obstacles:[["emoji","🦴",.28,.26,26],["emoji","🦮",.58,.34,24],["emoji","🦴",.40,.58,26],["emoji","🦮",.72,.70,24],["emoji","🦴",.22,.76,26]],
- walls:[[.22,.22,.04,.28,"work"],[.00,.48,.36,.04,"work"],[.56,.48,.44,.04,"work"],[.32,.72,.40,.04,"work"]]},
-{name:"Movie Marathon",par:6,ball:"golf",bg:"#111827",border:"#7c2d12",texture:"movies",endzone:false,hole:{x:.82,y:.16},start:{x:.18,y:.86},
- obstacles:[["emoji","🍿",.30,.24,28],["emoji","🍿",.64,.36,28],["emoji","🍿",.42,.58,28],["emoji","🍿",.74,.72,28]],
- walls:[[.12,.20,.76,.04,"work"],[.00,.38,.60,.04,"work"],[.34,.56,.66,.04,"work"],[.00,.74,.52,.04,"work"]]},
-{name:"Magic Mike",par:6,ball:"golf",bg:"#581c87",border:"#111827",texture:"magic",endzone:false,hole:{x:.18,y:.16},start:{x:.82,y:.86},
- obstacles:[["emoji","🎩",.28,.24,28],["emoji","🎲",.62,.34,28],["emoji","🃏",.40,.56,28],["emoji","♦️",.74,.68,24],["emoji","♠️",.22,.74,24]],
- walls:[[.24,.20,.04,.28,"work"],[.00,.46,.42,.04,"work"],[.56,.46,.44,.04,"work"],[.30,.72,.40,.04,"work"]]},
-{name:"Stairway to Heaven",par:6,ball:"golf",bg:"#1e293b",border:"#f59e0b",texture:"rock",endzone:false,hole:{x:.82,y:.14},start:{x:.18,y:.86},
- obstacles:[["emoji","🎸",.30,.24,30],["emoji","🤘",.62,.34,26],["emoji","🎵",.40,.58,24],["emoji","🥁",.74,.68,28],["emoji","🎸",.24,.76,30]],
- walls:[[.00,.26,.36,.04,"court"],[.58,.26,.42,.04,"court"],[.22,.52,.46,.04,"court"],[.70,.64,.04,.22,"court"]]},
-{name:"Caden's Cherry Chip Kingdom",par:6,ball:"golf",bg:"#fecdd3",border:"#be123c",texture:"dessert",endzone:false,hole:{x:.18,y:.16},start:{x:.82,y:.86},
- obstacles:[["emoji","🍒",.28,.24,24],["emoji","🍰",.62,.34,30],["emoji","🍒",.40,.56,24],["emoji","🧁",.74,.68,28],["emoji","🍰",.22,.76,30]],
- walls:[[.24,.22,.04,.28,"work"],[.00,.46,.42,.04,"work"],[.56,.46,.44,.04,"work"],[.30,.72,.40,.04,"work"]]}
-]
 
-const $=id=>document.getElementById(id);
-const course=$("course"),texture=$("texture"),endzone=$("endzone"),holeEl=$("hole"),flag=$("flag"),wallsEl=$("walls"),obstaclesEl=$("obstacles"),ball=$("ball");
-const aimSvg=$("aimSvg"),aimLine=$("aimLine"),aimHead=$("aimHead"),powerText=$("powerText");
-let current=0,strokes=0,ballX=0,ballY=0,vx=0,vy=0,dragging=false,aimTarget=null,walls=[],obstacles=[],completed=false,animationStarted=false;
-const scores=Array(HOLES.length).fill(null);
+  /* HEADER AREA */
 
-function W(){return course.clientWidth} function H(){return course.clientHeight}
-function px(p){return p*W()} function py(p){return p*H()}
-function ballSize(){return ball.className.includes("football")?{w:42,h:28,r:21}:{w:34,h:34,r:17}}
-function center(){const s=ballSize();return {x:ballX+s.w/2,y:ballY+s.h/2}}
-function setTexture(t){
- const m={
-  sand:["radial-gradient(circle at 20% 30%, rgba(255,255,255,.18) 0 2px, transparent 2px),radial-gradient(circle at 70% 60%, rgba(0,0,0,.07) 0 2px, transparent 2px)","42px 42px"],
-  football:["linear-gradient(90deg, rgba(255,255,255,.35) 2px, transparent 2px),linear-gradient(rgba(255,255,255,.18) 2px, transparent 2px)","20% 100%,100% 88px"],
-  putt:["radial-gradient(circle, rgba(255,255,255,.18) 0 2px, transparent 2px)","40px 40px"],
-  court:["linear-gradient(90deg, rgba(255,255,255,.45) 3px, transparent 3px),radial-gradient(circle at 50% 50%, transparent 80px, rgba(255,255,255,.35) 82px, transparent 84px)","100% 100%,100% 100%"],
-  grass:["linear-gradient(90deg, rgba(255,255,255,.12) 50%, transparent 50%)","90px 100%"],
-  wood:["repeating-linear-gradient(0deg, rgba(220,38,38,.18) 0 16px, transparent 16px 32px), repeating-linear-gradient(90deg, rgba(220,38,38,.18) 0 16px, transparent 16px 32px)","100% 100%,100% 100%"],
-  greek:["repeating-linear-gradient(180deg,#2563eb 0 40px,#ffffff 40px 80px)","100% 100%"],
-  pasture:["linear-gradient(90deg, rgba(255,255,255,.10) 50%, transparent 50%), radial-gradient(circle at 20% 20%, rgba(255,255,255,.10) 0 2px, transparent 2px)","90px 100%,40px 40px"],
-  california:["linear-gradient(#60a5fa 0%, #93c5fd 55%, #fef3c7 100%)","100% 100%"],
-  innout:["repeating-linear-gradient(45deg, rgba(220,38,38,.18) 0 18px, transparent 18px 36px), linear-gradient(#fef3c7 0%, #fde68a 100%)","100% 100%,100% 100%"],
-  radar:["radial-gradient(circle at 20% 20%, rgba(146,64,14,.12) 0 6px, transparent 6px), linear-gradient(#d9f99d 0%, #bbf7d0 100%)","80px 80px,100% 100%"],
-  movies:["repeating-linear-gradient(90deg, rgba(127,29,29,.35) 0 14px, transparent 14px 28px), linear-gradient(#111827 0%, #1f2937 100%)","100% 100%,100% 100%"],
-  magic:["radial-gradient(circle at 20% 20%, rgba(255,255,255,.12) 0 3px, transparent 3px), linear-gradient(#581c87 0%, #7c3aed 100%)","50px 50px,100% 100%"],
-  rock:["repeating-linear-gradient(45deg, rgba(245,158,11,.18) 0 14px, transparent 14px 28px), linear-gradient(#111827 0%, #1e293b 100%)","100% 100%,100% 100%"],
-  dessert:["radial-gradient(circle at 20% 20%, rgba(255,255,255,.18) 0 4px, transparent 4px), linear-gradient(#fecdd3 0%, #f9a8d4 100%)","60px 60px,100% 100%"]
- };
- texture.style.backgroundImage=m[t][0]; texture.style.backgroundSize=m[t][1];
-}
-function drawBall(){ball.style.left=ballX+"px";ball.style.top=ballY+"px"}
-function updateScorecard(){
- const rows=$("scoreRows");
- rows.innerHTML="";
- scores.forEach((score,i)=>{
-  const tr=document.createElement("tr");
-  if(i===current)tr.className="activeHole";
-  const scoreText=score===null?"—":score;
-  tr.innerHTML=`<td>${i+1}</td><td>${HOLES[i].par}</td><td>${scoreText}</td>`;
-  rows.appendChild(tr);
- });
- $("totalScore").textContent=scores.reduce((sum,score)=>sum+(score||0),0);
-}
-function loadHole(i){
- current=i;strokes=0;vx=0;vy=0;completed=false;dragging=false;hideAim();
- const h=HOLES[i],s=ballSize();
- course.style.background=h.bg;course.style.borderColor=h.border;setTexture(h.texture);
- endzone.style.display=h.endzone?"flex":"none";
- $("holeTitle").textContent=`Hole ${i+1} — ${h.name}`;$("holeNum").textContent=i+1;$("par").textContent=`PAR ${h.par}`;$("strokes").textContent=0;
- ball.className=h.ball;
- const bs=ballSize();ballX=px(h.start.x)-bs.w/2;ballY=py(h.start.y)-bs.h/2;
- holeEl.style.left=(px(h.hole.x)-22)+"px";holeEl.style.top=(py(h.hole.y)-22)+"px";
- flag.style.left=px(h.hole.x)+"px";flag.style.top=(py(h.hole.y)-82)+"px";
- wallsEl.innerHTML="";obstaclesEl.innerHTML="";walls=[];obstacles=[];
- h.walls.forEach(a=>{const [x,y,w,h,cls]=a;const r={x:px(x),y:py(y),w:px(w),h:py(h)};const el=document.createElement("div");el.className=`wall ${cls}`;Object.assign(el.style,{left:r.x+"px",top:r.y+"px",width:r.w+"px",height:r.h+"px"});wallsEl.appendChild(el);walls.push(r)});
- h.obstacles.forEach(o=>{const [type,val,x,y,r]=o;const ox=px(x),oy=py(y);const el=document.createElement("div");el.className="obstacle";Object.assign(el.style,{left:(ox-r)+"px",top:(oy-r)+"px",width:(r*2)+"px",height:(r*2)+"px"});if(type==="player"){el.classList.add("player");el.textContent=val}else{el.innerHTML=`<span style="font-size:${Math.max(36,r*1.42)}px">${val}</span>`}obstaclesEl.appendChild(el);obstacles.push({x:ox,y:oy,r})});
- document.querySelectorAll(".holeBtn").forEach((b,n)=>b.classList.toggle("active",n===i));
- $("message").textContent="";
- updateScorecard();
- drawBall();
-}
-function point(e){const r=course.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
-function showAim(p){
- const c=center();let dx=p.x-c.x,dy=p.y-c.y;let len=Math.hypot(dx,dy);if(len<1)len=1;
- const max=145, shown=Math.min(len,max), ux=dx/len, uy=dy/len;
- const ex=c.x+ux*shown, ey=c.y+uy*shown;
- aimSvg.style.display="block";powerText.style.display="block";
- aimLine.setAttribute("x1",c.x);aimLine.setAttribute("y1",c.y);aimLine.setAttribute("x2",ex);aimLine.setAttribute("y2",ey);
- const head=16,wide=11, bx=ex-ux*head, by=ey-uy*head, pxp=-uy, pyp=ux;
- aimHead.setAttribute("points",`${ex},${ey} ${bx+pxp*wide},${by+pyp*wide} ${bx-pxp*wide},${by-pyp*wide}`);
- powerText.textContent=`Power ${Math.round(Math.min(len,max)/max*100)}%`;
- powerText.style.left=(ex+10)+"px";powerText.style.top=(ey-20)+"px";
- aimTarget=p;
-}
-function hideAim(){aimSvg.style.display="none";powerText.style.display="none";aimTarget=null}
-course.addEventListener("pointerdown",e=>{
- if(completed||Math.hypot(vx,vy)>.3)return;
- dragging=true;course.setPointerCapture?.(e.pointerId);showAim(point(e));
-});
-course.addEventListener("pointermove",e=>{if(dragging)showAim(point(e))});
-course.addEventListener("pointerup",e=>{
- if(!dragging)return;dragging=false;const p=aimTarget||point(e);const c=center();
- let dx=p.x-c.x,dy=p.y-c.y,len=Math.hypot(dx,dy);hideAim();if(len<8)return;
- const power=Math.min(len,145)*0.105;vx=dx/len*power;vy=dy/len*power;strokes++;$("strokes").textContent=strokes;
-});
-
-function collideRect(cx,cy,r,rect){
- const qx=Math.max(rect.x,Math.min(cx,rect.x+rect.w)),qy=Math.max(rect.y,Math.min(cy,rect.y+rect.h));
- const dx=cx-qx,dy=cy-qy;return dx*dx+dy*dy<r*r;
-}
-function tick(){
- const s=ballSize();
- ballX+=vx;ballY+=vy;vx*=.985;vy*=.985;if(Math.abs(vx)<.025)vx=0;if(Math.abs(vy)<.025)vy=0;
- const maxX=W()-s.w,maxY=H()-s.h;if(ballX<0){ballX=0;vx*=-.78}if(ballY<0){ballY=0;vy*=-.78}if(ballX>maxX){ballX=maxX;vx*=-.78}if(ballY>maxY){ballY=maxY;vy*=-.78}
- let c=center();
- walls.forEach(r=>{
-  if(collideRect(c.x,c.y,s.r,r)){
-    const left=Math.abs(c.x-r.x),right=Math.abs(c.x-(r.x+r.w)),top=Math.abs(c.y-r.y),bottom=Math.abs(c.y-(r.y+r.h));
-    const m=Math.min(left,right,top,bottom);
-    if(m===left){ballX=r.x-s.w-1;vx=-Math.abs(vx)*.82}
-    else if(m===right){ballX=r.x+r.w+1;vx=Math.abs(vx)*.82}
-    else if(m===top){ballY=r.y-s.h-1;vy=-Math.abs(vy)*.82}
-    else{ballY=r.y+r.h+1;vy=Math.abs(vy)*.82}
-    c=center();
+  #header{
+    top:90px;
+    width:100vw;
+    z-index:60;
   }
- });
- obstacles.forEach(o=>{
-  const dx=c.x-o.x,dy=c.y-o.y,d=Math.hypot(dx,dy),min=o.r+s.r;
-  if(d<min&&d>0){const nx=dx/d,ny=dy/d,over=min-d;ballX+=nx*over;ballY+=ny*over;const dot=vx*nx+vy*ny;vx=(vx-2*dot*nx)*.80;vy=(vy-2*dot*ny)*.80;c=center();}
- });
- const h=HOLES[current],hx=px(h.hole.x),hy=py(h.hole.y);
- if(!completed&&Math.hypot(c.x-hx,c.y-hy)<24&&Math.hypot(vx,vy)<4.4){
-  completed=true;vx=0;vy=0;scores[current]=strokes;updateScorecard();$("message").textContent=`🎉 ${h.name} complete!`;
-  if(current<HOLES.length-1)setTimeout(()=>loadHole(current+1),950);
- }
- drawBall();requestAnimationFrame(tick);
+
+  #mainTitle{
+    font-size:24px;
+    max-width:92vw;
+    padding:7px 14px 5px;
+  }
+
+  #holeTitle{
+    margin-top:10px;
+    font-size:18px;
+    max-width:92vw;
+    text-align:center;
+  }
+
+  /* HUD BOXES */
+
+  #holeHud{
+    top:8px;
+    left:8px;
+  }
+
+  #strokeHud{
+    top:8px;
+    right:8px;
+  }
+
+  .hud{
+    padding:7px 8px;
+    border-radius:14px;
+    z-index:100;
+  }
+
+  .hud .big{
+    font-size:30px;
+  }
+
+  .hud .small{
+    font-size:12px;
+  }
+
+  /* SCORECARD */
+
+  #scorecard{
+    position:absolute;
+
+    top:175px;
+    left:50%;
+    right:auto;
+
+    transform:translateX(-50%);
+
+    width:92vw;
+    max-height:90px;
+
+    overflow:auto;
+
+    z-index:95;
+
+    border-radius:16px;
+  }
+
+  #scorecard h3{
+    font-size:13px;
+    padding:4px;
+  }
+
+  #scorecard th,
+  #scorecard td{
+    font-size:11px;
+    padding:2px 5px;
+  }
+
+  /* COURSE */
+
+  #course{
+    top:280px;
+    height:calc(100vh - 360px);
+    min-height:0;
+    width:94vw;
+  }
+
+  /* BOTTOM CONTROLS */
+
+  #controls{
+    bottom:18px;
+    width:96vw;
+
+    gap:5px;
+
+    flex-wrap:nowrap;
+
+    overflow-x:auto;
+
+    justify-content:flex-start;
+
+    padding:0 8px;
+  }
+
+  #leftControls{
+    display:flex;
+    gap:5px;
+    flex-shrink:0;
+  }
+
+  #holeButtons{
+    display:flex;
+    gap:5px;
+    flex-shrink:0;
+  }
+
+  .holeBtn{
+    width:34px;
+    height:34px;
+    min-width:34px;
+
+    flex-shrink:0;
+  }
+
+  button{
+    flex-shrink:0;
+  }
 }
-$("resetBtn").onclick=()=>{scores[current]=null;loadHole(current)};
-$("prevBtn").onclick=()=>loadHole((current-1+HOLES.length)%HOLES.length);
-$("nextBtn").onclick=()=>loadHole((current+1)%HOLES.length);
-HOLES.forEach((h,i)=>{const b=document.createElement("button");b.className="holeBtn";b.textContent=i+1;b.onclick=()=>loadHole(i);$("holeButtons").appendChild(b)});
-let resizeTimer;window.addEventListener("resize",()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>loadHole(current),100)});
-loadHole(0);tick();
-</script>
-</body>
-</html>
+
+</style>
