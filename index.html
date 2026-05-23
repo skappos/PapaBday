@@ -1,224 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+
+<title>Papa's Play Pen</title>
+
 <style>
 
-@media(max-width:700px){
+*{
+  box-sizing:border-box;
+}
 
-  html,
-  body{
-    overflow:hidden;
-    height:100%;
-    width:100%;
-  }
+html,
+body{
+  margin:0;
+  width:100%;
+  height:100dvh;
+  overflow:hidden;
 
-  #game{
-    overflow:hidden;
-  }
+  touch-action:none;
 
-  /* =========================
-     TOP HUD
-  ========================= */
+  font-family:Arial, Helvetica, sans-serif;
 
-  #header{
-    top:82px;
-    width:100vw;
-    z-index:60;
-  }
+  background:#86d9ff;
+}
 
-  #mainTitle{
-    font-size:22px;
-    padding:6px 12px 4px;
+#game{
+  position:relative;
 
-    max-width:62vw;
+  width:100vw;
+  height:100dvh;
 
-    overflow:hidden;
-    white-space:nowrap;
-    text-overflow:ellipsis;
+  padding-top:env(safe-area-inset-top);
+  padding-bottom:env(safe-area-inset-bottom);
 
-    border-width:3px;
-    border-radius:14px;
-  }
+  overflow:hidden;
 
-  #holeTitle{
-    margin-top:8px;
+  background:linear-gradient(#78d4ff 0%,#d7f7ff 45%,#f3ce7b 100%);
+}
 
-    font-size:15px;
+/* =========================
+   HEADER
+========================= */
 
-    max-width:92vw;
+#header{
+  position:absolute;
 
-    text-align:center;
+  top:82px;
 
-    line-height:1.1;
-  }
+  left:50%;
 
-  /* =========================
-     HUD BOXES
-  ========================= */
+  transform:translateX(-50%);
 
-  #holeHud{
-    top:8px;
-    left:8px;
-  }
+  z-index:60;
 
-  #strokeHud{
-    top:8px;
-    right:8px;
-  }
+  width:100vw;
 
-  .hud{
-    padding:6px 7px;
+  text-align:center;
 
-    border-radius:14px;
+  pointer-events:none;
+}
 
-    transform:scale(.92);
+#mainTitle{
+  display:inline-block;
 
-    transform-origin:top;
-  }
+  background:linear-gradient(#9a5b2e,#66391d);
 
-  .hud .big{
-    font-size:28px;
-  }
+  color:#fff7dd;
 
-  .hud .small{
-    font-size:11px;
-  }
+  padding:10px 22px 8px;
 
-  /* =========================
-     SCORECARD
-  ========================= */
+  border-radius:18px;
 
-  #scorecard{
-    position:absolute;
+  border:4px solid #4a2711;
 
-    top:150px;
+  font-size:clamp(20px,4vw,38px);
 
-    left:50%;
+  font-weight:1000;
 
-    transform:translateX(-50%);
+  letter-spacing:1px;
 
-    width:94vw;
+  text-shadow:2px 3px 0 #3b220f;
 
-    max-height:78px;
+  max-width:92vw;
 
-    overflow-x:auto;
-    overflow-y:hidden;
+  white-space:nowrap;
 
-    z-index:95;
+  overflow:hidden;
 
-    border-radius:14px;
-  }
+  text-overflow:ellipsis;
+}
 
-  #scorecard h3{
-    font-size:12px;
-    padding:4px;
-  }
+/* =========================
+   HUD BOXES
+========================= */
 
-  #scorecard table{
-    min-width:650px;
-  }
+.hud{
+  position:absolute;
 
-  #scorecard th,
-  #scorecard td{
-    font-size:10px;
-    padding:2px 4px;
-  }
+  z-index:100;
 
-  #scorecard tr.totalRow{
-    font-size:11px;
-  }
+  top:10px;
 
-  /* =========================
-     COURSE
-  ========================= */
+  padding:10px 12px;
 
-  #course{
-    top:245px;
+  background:rgba(23,50,77,.93);
 
-    width:95vw;
+  color:white;
 
-    height:calc(100vh - 370px);
+  border:3px solid rgba(255,255,255,.35);
 
-    min-height:430px;
+  border-radius:16px;
 
-    border-width:8px;
+  text-align:center;
 
-    border-radius:28px;
-  }
+  box-shadow:0 5px 14px rgba(0,0,0,.25);
+}
 
-  /* =========================
-     CONTROLS
-  ========================= */
+#holeHud{
+  left:10px;
+}
 
-  #controls{
-    position:absolute;
+#strokeHud{
+  right:10px;
+}
 
-    left:50%;
+.hud .big{
+  font-size:34px;
+  font-weight:1000;
+  line-height:1;
+}
 
-    transform:translateX(-50%);
+.hud .small{
+  font-size:13px;
+  font-weight:900;
+  opacity:.95;
+}
 
-    bottom:12px;
+/* =========================
+   SCORECARD
+========================= */
 
-    width:98vw;
+#scorecard{
+  position:absolute;
 
-    display:flex;
+  top:150px;
 
-    align-items:center;
+  left:50%;
 
-    gap:4px;
+  transform:translateX(-50%);
 
-    overflow-x:auto;
+  width:94vw;
 
-    overflow-y:hidden;
+  max-height:78px;
 
-    flex-wrap:nowrap;
+  overflow-x:auto;
+  overflow-y:hidden;
 
-    justify-content:flex-start;
+  z-index:95;
 
-    padding:0 6px;
-  }
+  background:rgba(255,248,220,.96);
 
-  #leftControls{
-    display:flex;
+  border:4px solid rgba(23,50,77,.35);
 
-    gap:4px;
+  border-radius:14px;
 
-    flex-shrink:0;
-  }
+  box-shadow:0 10px 18px rgba(0,0,0,.22);
+}
 
-  #holeButtons{
-    display:flex;
+#scorecard h3{
+  margin:0;
 
-    gap:4px;
+  padding:4px;
 
-    flex-shrink:0;
-  }
+  text-align:center;
 
-  button{
-    flex-shrink:0;
-  }
+  background:#17324d;
 
-  .holeBtn{
-    width:32px;
-    height:32px;
+  color:white;
 
-    min-width:32px;
+  font-size:12px;
+}
 
-    font-size:14px;
+#scorecard table{
+  width:100%;
 
-    flex-shrink:0;
-  }
+  min-width:650px;
 
-  #prevBtn,
-  #nextBtn{
-    width:38px;
-    height:38px;
+  border-collapse:collapse;
 
-    padding:0;
-  }
+  font-weight:900;
+}
 
-  #resetBtn{
-    padding:8px 12px;
+#scorecard th,
+#scorecard td{
+  font-size:10px;
 
-    font-size:13px;
-  }
+  padding:2px 4px;
+
+  text-align:center;
+
+  border-bottom:1px solid rgba(0,0,0,.1);
+}
+
+#scorecard tr.totalRow{
+  background:#ead39b;
+
+  font-size:11px;
+}
+
+/* =========================
+   COURSE
+========================= */
+
+#course{
+  position:absolute;
+
+  left:50%;
+
+  top:245px;
+
+  transform:translateX(-50%);
+
+  width:95vw;
+
+  height:calc(100dvh - 355px);
+
+  min-height:420px;
+
+  border-radius:28px;
+
+  overflow:hidden;
+
+  border:8px solid #8b5a2b;
+
+  box-shadow:
+    0 20px 30px rgba(0,0,0,.25),
+    inset 0 0 34px rgba(0,0,0,.20);
+
+  background:#f3d38a;
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+#controls{
+  position:absolute;
+
+  left:50%;
+
+  transform:translateX(-50%);
+
+  bottom:12px;
+
+  width:98vw;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:4px;
+
+  overflow-x:auto;
+
+  overflow-y:hidden;
+
+  flex-wrap:nowrap;
+
+  justify-content:flex-start;
+
+  padding:0 6px;
+
+  z-index:80;
+}
+
+#leftControls{
+  display:flex;
+
+  gap:4px;
+
+  flex-shrink:0;
+}
+
+#holeButtons{
+  display:flex;
+
+  gap:4px;
+
+  flex-shrink:0;
+}
+
+button{
+  border:0;
+
+  border-radius:999px;
+
+  background:#17324d;
+
+  color:white;
+
+  font-weight:1000;
+
+  cursor:pointer;
+
+  flex-shrink:0;
+
+  box-shadow:0 4px 8px rgba(0,0,0,.25);
+}
+
+.holeBtn{
+  width:32px;
+  height:32px;
+
+  min-width:32px;
+
+  font-size:14px;
+
+  background:#ead39b;
+
+  color:#6b4a1b;
+}
+
+.holeBtn.active{
+  background:#0284c7;
+  color:white;
+}
+
+#prevBtn,
+#nextBtn{
+  width:38px;
+  height:38px;
+
+  padding:0;
+}
+
+#resetBtn{
+  padding:8px 12px;
+
+  font-size:13px;
 }
 
 </style>
+</head>
+
+<body>
+
+<div id="game">
+
+  <div id="header">
+    <div id="mainTitle"></div>
+  </div>
+
+  <div id="holeHud" class="hud">
+    <div class="small">HOLE</div>
+    <div id="holeNum" class="big">1</div>
+    <div id="par" class="small">PAR 4</div>
+  </div>
+
+  <div id="strokeHud" class="hud">
+    <div class="small">STROKES</div>
+    <div id="strokes" class="big">0</div>
+  </div>
+
+  <div id="scorecard">
+
+    <h3>SCORECARD</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Hole</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+
+      <tbody id="scoreRows"></tbody>
+
+      <tfoot>
+        <tr class="totalRow">
+          <td>TOTAL</td>
+          <td id="totalScore">0</td>
+        </tr>
+      </tfoot>
+    </table>
+
+  </div>
+
+  <div id="course"></div>
+
+  <div id="controls">
+
+    <div id="leftControls">
+      <button id="prevBtn">◀</button>
+      <button id="resetBtn">Restart</button>
+    </div>
+
+    <span id="holeButtons"></span>
+
+    <button id="nextBtn">▶</button>
+
+  </div>
+
+</div>
+
+<script>
+
+const HOLES=[
+  {name:"Papa's Play Pen",par:5},
+  {name:"Dawg Pound",par:4},
+  {name:"YiaYia's Flamingo Paradise",par:3},
+  {name:"Papou's Slam Dunk",par:4},
+  {name:"Bob's Blockade",par:4},
+  {name:"Beach Bocce",par:3},
+  {name:"Sophie's Spaghetti Space",par:5},
+  {name:"Nick the Greek",par:4},
+  {name:"Julie's Horse Camp",par:5},
+  {name:"Alex's Californiacation",par:6},
+  {name:"In and Out",par:5},
+  {name:"Radar's Rendezvous",par:5},
+  {name:"Movie Marathon",par:6},
+  {name:"Magic Mike",par:6},
+  {name:"Stairway to Heaven",par:6},
+  {name:"Caden's Cherry Chip Kingdom",par:6}
+];
+
+let current=0;
+let strokes=0;
+
+const scores=new Array(HOLES.length).fill("-");
+
+function $(id){
+  return document.getElementById(id);
+}
+
+function updateScorecard(){
+
+  const rows=$("scoreRows");
+
+  rows.innerHTML="";
+
+  let total=0;
+
+  scores.forEach((s,i)=>{
+
+    const tr=document.createElement("tr");
+
+    tr.innerHTML=`
+      <td>${i+1}</td>
+      <td>${s}</td>
+    `;
+
+    rows.appendChild(tr);
+
+    if(typeof s==="number"){
+      total+=s;
+    }
+
+  });
+
+  $("totalScore").textContent=total;
+}
+
+function loadHole(i){
+
+  current=i;
+
+  strokes=0;
+
+  const h=HOLES[i];
+
+  $("holeNum").textContent=i+1;
+
+  $("par").textContent=`PAR ${h.par}`;
+
+  $("strokes").textContent=0;
+
+  $("mainTitle").textContent=`Hole ${i+1} — ${h.name}`;
+
+  document.querySelectorAll(".holeBtn")
+    .forEach((b,n)=>b.classList.toggle("active",n===i));
+}
+
+function completeHole(){
+
+  scores[current]=strokes;
+
+  updateScorecard();
+
+  if(current<HOLES.length-1){
+    loadHole(current+1);
+  }
+}
+
+$("prevBtn").onclick=()=>{
+  loadHole((current-1+HOLES.length)%HOLES.length);
+};
+
+$("nextBtn").onclick=()=>{
+  loadHole((current+1)%HOLES.length);
+};
+
+$("resetBtn").onclick=()=>{
+  strokes=0;
+  $("strokes").textContent=0;
+};
+
+HOLES.forEach((h,i)=>{
+
+  const b=document.createElement("button");
+
+  b.className="holeBtn";
+
+  b.textContent=i+1;
+
+  b.onclick=()=>loadHole(i);
+
+  $("holeButtons").appendChild(b);
+
+});
+
+updateScorecard();
+
+loadHole(0);
+
+</script>
+
+</body>
+</html>
