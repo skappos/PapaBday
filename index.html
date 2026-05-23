@@ -36,17 +36,34 @@ html,body{
 #holeHud{left:12px}
 #strokeHud{right:12px}
 #scorecard{
-  position:absolute;right:12px;top:118px;z-index:61;width:190px;max-height:calc(100dvh - 205px);
-  overflow:auto;background:rgba(255,247,221,.94);color:#17324d;border:3px solid rgba(23,50,77,.35);
-  border-radius:16px;box-shadow:0 5px 14px rgba(0,0,0,.22);font-weight:900;
+  top:118px;
+  left:50%;
+  right:auto;
+  transform:translateX(-50%);
+
+  width:94vw;
+
+  max-height:none;
+
+  overflow:hidden;
+
+  border-radius:14px;
+
+  z-index:95;
 }
-#scorecardTitle{padding:8px 10px 5px;text-align:center;background:#17324d;color:white;border-radius:12px 12px 0 0}
-#scorecard table{width:100%;border-collapse:collapse;font-size:13px}
-#scorecard th,#scorecard td{padding:5px 6px;text-align:center;border-bottom:1px solid rgba(23,50,77,.16)}
-#scorecard tr.activeHole{background:rgba(2,132,199,.18)}
-#scorecard tfoot td{font-size:15px;background:#ead39b;border-bottom:0}
-.hud .big{font-size:34px;font-weight:1000;line-height:1}
-.hud .small{font-size:13px;font-weight:900;opacity:.95}
+
+#scorecard table{
+  width:100%;
+  min-width:0;
+  table-layout:fixed;
+  font-size:11px;
+}
+
+#scorecard th,
+#scorecard td{
+  padding:3px 1px;
+  font-size:11px;
+}
 #course{
   position:absolute;left:50%;top:140px;transform:translateX(-50%);
   width:min(92vw,650px);height:calc(100dvh - 205px);
