@@ -417,7 +417,7 @@ function collideRect(cx,cy,r,rect){
 function tick(){
  const s=ballSize();
  ballX+=vx;ballY+=vy;vx*=.955;vy*=.955;if(Math.abs(vx)<.025)vx=0;if(Math.abs(vy)<.025)vy=0;
- const maxX=W()-s.w,maxY=H()-s.h;if(ballX<0){ballX=0;vx*=-.78}if(ballY<0){ballY=0;vy*=-.78}if(ballX>maxX){ballX=maxX;vx*=-.78}if(ballY>maxY){ballY=maxY;vy*=-.78}
+ const maxX=W()-s.w,maxY=H()-s.h;if(ballX<0){ballX=0;vx*=-.88}if(ballY<0){ballY=0;vy*=-.88}if(ballX>maxX){ballX=maxX;vx*=-.88}if(ballY>maxY){ballY=maxY;vy*=-.88}
  let c=center();
  walls.forEach(r=>{
   if(collideRect(c.x,c.y,s.r,r)){
