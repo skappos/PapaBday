@@ -147,51 +147,52 @@ button{
   html,body{height:100dvh;overflow:hidden}
   #game{height:100dvh;overflow:hidden;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
 
-  #holeHud{top:8px;left:8px}
-  #strokeHud{top:8px;right:8px}
-  .hud{padding:6px 7px;border-radius:14px;transform:scale(.88);transform-origin:top}
+  #holeHud{top:10px;left:8px}
+  #strokeHud{top:10px;right:8px}
+  .hud{padding:6px 7px;border-radius:14px;transform:scale(.86);transform-origin:top}
   .hud .big{font-size:28px}
   .hud .small{font-size:11px}
 
-  #header{top:82px;width:100vw;z-index:65}
-  #mainTitle{font-size:clamp(16px,4.6vw,24px);max-width:72vw;padding:7px 12px 5px;border-width:3px;border-radius:14px}
-
-  #scorecard{
-    top:145px;
+  /* Title sits centered between the HOLE and STROKES boxes */
+  #header{
+    top:18px;
     left:50%;
-    right:auto;
     transform:translateX(-50%);
-    width:94vw;
-    max-height:78px;
-    overflow:hidden;
-    border-radius:14px;
-    z-index:95
+    width:calc(100vw - 165px);
+    z-index:65;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
-
-  #scorecardTitle{
-    padding:4px;
-    font-size:12px
-  }
-
-  #scorecard table{
+  #mainTitle{
     width:100%;
-    min-width:0;
-    table-layout:fixed;
-    font-size:10px
+    max-width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:10px 10px 8px;
+    border-width:3px;
+    border-radius:16px;
+    font-size:18px;
+    line-height:1.05;
+    text-align:center;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:clip;
   }
 
-  #scorecard th,
-  #scorecard td{
-    padding:2px 0;
-    font-size:10px;
-    white-space:nowrap
-  }
+  #scorecard{top:118px;left:50%;right:auto;transform:translateX(-50%);width:94vw;max-height:78px;overflow-x:auto;overflow-y:hidden;border-radius:14px;z-index:95}
+  #scorecardTitle{padding:4px;font-size:12px}
+  #scorecard table{font-size:10px;min-width:650px}
+  #scorecard th,#scorecard td{padding:2px 4px}
+  #scorecard tfoot td{font-size:11px}
 
-  #scorecard tfoot td{
-    font-size:11px
-  }
+  #course{top:205px;width:95vw;height:calc(100dvh - 320px);min-height:0;max-height:none;border-width:8px;border-radius:28px}
 
-  #course{top:235px;width:95vw;height:calc(100dvh - 350px);min-height:0;max-height:none;border-width:8px;border-radius:28px}
+  /* Mobile course tuning: smaller ball + thinner walls = wider playable openings */
+  #ball{width:28px;height:28px}
+  .football{width:34px!important;height:22px!important}
+  .wall{border-width:2px}
 
   #controls{bottom:calc(10px + env(safe-area-inset-bottom));width:98vw;gap:4px;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;justify-content:flex-start;padding:0 6px}
   #leftControls{display:flex;gap:4px;flex-shrink:0}
@@ -302,7 +303,11 @@ const scores=Array(HOLES.length).fill(null);
 
 function W(){return course.clientWidth} function H(){return course.clientHeight}
 function px(p){return p*W()} function py(p){return p*H()}
-function ballSize(){return ball.className.includes("football")?{w:42,h:28,r:21}:{w:34,h:34,r:17}}
+function isMobile(){return window.innerWidth<=700}
+function ballSize(){
+  if(ball.className.includes("football")) return isMobile()?{w:34,h:22,r:17}:{w:42,h:28,r:21};
+  return isMobile()?{w:28,h:28,r:14}:{w:34,h:34,r:17};
+}
 function center(){const s=ballSize();return {x:ballX+s.w/2,y:ballY+s.h/2}}
 function setTexture(t){
  const m={
@@ -325,6 +330,18 @@ function setTexture(t){
  texture.style.backgroundImage=m[t][0]; texture.style.backgroundSize=m[t][1];
 }
 function drawBall(){ball.style.left=ballX+"px";ball.style.top=ballY+"px"}
+function fitTitle(){
+ const el=$("mainTitle");
+ if(!el)return;
+ el.style.fontSize="";
+ if(window.innerWidth>700)return;
+ let size=18;
+ el.style.fontSize=size+"px";
+ while(el.scrollWidth>el.clientWidth&&size>9){
+  size-=.5;
+  el.style.fontSize=size+"px";
+ }
+}
 function updateScorecard(){
  const rows=$("scoreRows");
  rows.innerHTML="";
@@ -342,13 +359,26 @@ function loadHole(i){
  const h=HOLES[i],s=ballSize();
  course.style.background=h.bg;course.style.borderColor=h.border;setTexture(h.texture);
  endzone.style.display=h.endzone?"flex":"none";
- $("mainTitle").textContent=`Hole ${i+1} — ${h.name}`;$("holeNum").textContent=i+1;$("par").textContent=`PAR ${h.par}`;$("strokes").textContent=0;
+ $("mainTitle").textContent=`Hole ${i+1} — ${h.name}`;fitTitle();$("holeNum").textContent=i+1;$("par").textContent=`PAR ${h.par}`;$("strokes").textContent=0;
  ball.className=h.ball;
  const bs=ballSize();ballX=px(h.start.x)-bs.w/2;ballY=py(h.start.y)-bs.h/2;
  holeEl.style.left=(px(h.hole.x)-22)+"px";holeEl.style.top=(py(h.hole.y)-22)+"px";
  flag.style.left=px(h.hole.x)+"px";flag.style.top=(py(h.hole.y)-82)+"px";
  wallsEl.innerHTML="";obstaclesEl.innerHTML="";walls=[];obstacles=[];
- h.walls.forEach(a=>{const [x,y,w,h,cls]=a;const r={x:px(x),y:py(y),w:px(w),h:py(h)};const el=document.createElement("div");el.className=`wall ${cls}`;Object.assign(el.style,{left:r.x+"px",top:r.y+"px",width:r.w+"px",height:r.h+"px"});wallsEl.appendChild(el);walls.push(r)});
+ h.walls.forEach(a=>{
+  let [x,y,w,h,cls]=a;
+  const originalW=w, originalH=h;
+  if(isMobile()){
+    w*=.62;
+    h*=.62;
+  }
+  const r={x:px(x+(originalW-w)/2),y:py(y+(originalH-h)/2),w:px(w),h:py(h)};
+  const el=document.createElement("div");
+  el.className=`wall ${cls}`;
+  Object.assign(el.style,{left:r.x+"px",top:r.y+"px",width:r.w+"px",height:r.h+"px"});
+  wallsEl.appendChild(el);
+  walls.push(r);
+ });
  h.obstacles.forEach(o=>{const [type,val,x,y,r]=o;const ox=px(x),oy=py(y);const el=document.createElement("div");el.className="obstacle";Object.assign(el.style,{left:(ox-r)+"px",top:(oy-r)+"px",width:(r*2)+"px",height:(r*2)+"px"});if(type==="player"){el.classList.add("player");el.textContent=val}else{el.innerHTML=`<span style="font-size:${Math.max(36,r*1.42)}px">${val}</span>`}obstaclesEl.appendChild(el);obstacles.push({x:ox,y:oy,r})});
  document.querySelectorAll(".holeBtn").forEach((b,n)=>b.classList.toggle("active",n===i));
  $("message").textContent="";
