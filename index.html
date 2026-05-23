@@ -22,11 +22,67 @@ html,body{
   z-index:50;text-align:center;width:min(94vw,780px);pointer-events:none;
 }
 #mainTitle{
-  display:inline-block;background:linear-gradient(#9a5b2e,#66391d);
-  color:#fff7dd;padding:9px 22px 6px;border-radius:18px;
-  border:4px solid #4a2711;font-size:clamp(20px,4vw,38px);
-  font-weight:1000;letter-spacing:1px;text-shadow:2px 3px 0 #3b220f;
-  max-width:72vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  position:absolute;
+
+  left:50%;
+  transform:translateX(-50%);
+
+  top:0;
+
+  height:86px;
+
+  width:calc(100vw - 230px);
+
+  max-width:620px;
+
+  background:linear-gradient(#9a5b2e,#66391d);
+
+  color:#fff7dd;
+
+  padding:0 14px;
+
+  border-radius:18px;
+
+  border:4px solid #4a2711;
+
+  font-size:clamp(18px,4vw,38px);
+
+  font-weight:1000;
+
+  letter-spacing:1px;
+
+  text-shadow:2px 3px 0 #3b220f;
+
+  white-space:nowrap;
+
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+
+  box-sizing:border-box;
+}
+  @media(max-width:700px){
+
+  #mainTitle{
+
+    width:calc(100vw - 190px);
+
+    height:62px;
+
+    font-size:clamp(16px,4vw,26px);
+
+    border-width:3px;
+
+    border-radius:16px;
+
+    padding:0 10px;
+  }
+
 }
 #holeTitle{display:none}
 .hud{
