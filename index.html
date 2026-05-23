@@ -17,23 +17,46 @@ html,body{
   background:linear-gradient(#78d4ff 0%,#d7f7ff 45%,#f3ce7b 100%);
 }
 #header{
+  position:absolute;
   top:18px;
   left:50%;
-  width:calc(100vw - 155px);
+  transform:translateX(-50%);
+  width:calc(100vw - 165px);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
   z-index:65;
+  pointer-events:none;
 }
+
 #mainTitle{
-  font-size:clamp(13px,3.6vw,20px);
-  max-width:100%;
-  padding:8px 10px 6px;
-  border-width:3px;
-  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-  white-space:normal;
-  overflow:visible;
-  text-overflow:unset;
+  width:100%;
 
+  background:linear-gradient(#9a5b2e,#66391d);
+  color:#fff7dd;
+
+  padding:10px 14px 8px;
+
+  border-radius:18px;
+  border:3px solid #4a2711;
+
+  font-size:clamp(13px,3.8vw,20px);
+  font-weight:1000;
   line-height:1.1;
+  text-align:center;
+
+  text-shadow:2px 3px 0 #3b220f;
+  box-shadow:0 5px 12px rgba(0,0,0,.25);
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 #holeTitle{display:none}
 .hud{
@@ -174,13 +197,9 @@ button{
     z-index:65;
   }
 
-  #mainTitle{
-    font-size:clamp(15px,4.2vw,21px);
-    max-width:100%;
-    padding:9px 10px 7px;
-    border-width:3px;
-    border-radius:16px;
-  }
+ #mainTitle{
+  font-size:clamp(12px,3.5vw,18px);
+}
 
   #scorecard{
     top:118px;
