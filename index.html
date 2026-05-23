@@ -41,8 +41,18 @@ html,body{
   border-radius:16px;box-shadow:0 5px 14px rgba(0,0,0,.22);font-weight:900;
 }
 #scorecardTitle{padding:8px 10px 5px;text-align:center;background:#17324d;color:white;border-radius:12px 12px 0 0}
-#scorecard table{width:100%;border-collapse:collapse;font-size:13px}
-#scorecard th,#scorecard td{padding:5px 6px;text-align:center;border-bottom:1px solid rgba(23,50,77,.16)}
+#scorecard table{
+  width:100%;
+  table-layout:fixed;
+  border-collapse:collapse;
+  font-size:11px;
+}
+#scorecard th,
+#scorecard td{
+  padding:2px 0;
+  font-size:10px;
+  white-space:nowrap;
+}
 #scorecard tr.activeHole{background:rgba(2,132,199,.18)}
 #scorecard tfoot td{font-size:15px;background:#ead39b;border-bottom:0}
 .hud .big{font-size:34px;font-weight:1000;line-height:1}
